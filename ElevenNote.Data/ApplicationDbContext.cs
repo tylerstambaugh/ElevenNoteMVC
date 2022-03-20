@@ -15,6 +15,9 @@ namespace ElevenNote.Data
         {
             return new ApplicationDbContext();
         }
+        public DbSet<Note> Notes { get; set; }
+        public DbSet<Category> Categories { get; set; }
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

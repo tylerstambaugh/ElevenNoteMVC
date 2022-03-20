@@ -1,0 +1,62 @@
+﻿
+@{
+    ViewBag.Title = "Maps";
+}
+
+<h2>Maps</h2>
+
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAkN0WwirqWWwUWjd8cIkHfs2CXD9SV8DQ&sensor=false"></script>
+
+<style>
+    #map_canvas img {
+        max-width: none
+    }
+</style>
+
+<style>
+    .infoDiv {
+        height: 200px;
+        width: 300px;
+        -webkit-user-select: none;
+        background-color: white;
+    }
+</style>
+
+@section scripts {
+    <section class="scripts">
+        <script type="text/javascript">
+            // our code will go in here...
+            //!-- This code tells the browser to execute the "Initialize" method
+            // only when the complete document model has been loaded. -- >
+            $(document).ready(function () {
+                Initialize();
+            });
+            function Initialize() {
+                google.maps.visualRefresh = true;
+                var Liverpool = new google.maps.LatLng(53.408841, -2.981397);
+                var mapOptions = {
+                    zoom: 14,
+                    center: Liverpool,
+                    mapTypeId: google.maps.MapTypeId.G_NORMAL_MAP
+                };
+                var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+
+                var infowindow = new google.maps.InfoWindow({
+                    content: "<div class='infoDiv'><h2>" +
+                        item.PlaceName + "</h2>" + "<div><h4>Opening hours: " +
+                        item.OpeningHours + "</h4></div></div>"
+                });
+
+                google.maps.event.addListener(marker, 'click', function () {
+                    infowindow.open(map, marker);
+                });
+            };
+
+
+        </script>
+
+    </section>
+}
+<div id="map_canvas" style="width: 500px; height: 500px">
+
+</div>

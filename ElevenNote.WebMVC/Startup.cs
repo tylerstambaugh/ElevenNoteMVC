@@ -1,4 +1,5 @@
-﻿using Microsoft.Owin;
+﻿using ElevenNote.Services;
+using Microsoft.Owin;
 using Owin;
 
 [assembly: OwinStartupAttribute(typeof(ElevenNote.WebMVC.Startup))]
@@ -9,6 +10,10 @@ namespace ElevenNote.WebMVC
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
+
+            var roleSvc = new RoleService();
+            roleSvc.CreateAdmin();
+            roleSvc.MakeUserAdmin();
         }
     }
 }
