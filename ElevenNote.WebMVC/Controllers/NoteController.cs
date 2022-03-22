@@ -18,6 +18,13 @@ namespace ElevenNote.WebMVC.Controllers
             return svc;
         }
 
+        private CategoryService CreateCategoryService()
+        {
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            var svc = new CategoryService(userId);
+            return svc;
+        }
+
         [Authorize]
         // GET: /Note/Index
         public ActionResult Index()
@@ -31,10 +38,14 @@ namespace ElevenNote.WebMVC.Controllers
         [HttpGet]
         public ActionResult Create()
         {
-            if (ModelState.IsValid)
+            var catSvc = CreateCategoryService();
+            var allCats = catSvc.GetAllCategories();
+            ViewData["Categories"] = allCats.Select(c => new SelectListItem
             {
-
-            }
+                Text = c.Name,
+                Value = c.CategoryId.ToString()
+            });
+           
             return View();
         }
 

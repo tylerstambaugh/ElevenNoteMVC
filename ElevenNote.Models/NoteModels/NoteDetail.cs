@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ElevenNote.Data;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -16,5 +17,9 @@ namespace ElevenNote.Models.NoteModels
         public DateTimeOffset CreatedUtc { get; set; }
         [Display(Name = "Modified Date")]
         public DateTimeOffset? ModifiedUtc { get; set; }
+
+        public int CategoryId { get; set; }
+        [Display(Name = "Category")]
+        public string CategoryName { get; set; }
     }
 }

@@ -24,6 +24,7 @@ namespace ElevenNote.Services
                 OwnerId = _userId,
                 Title = model.Title,
                 Content = model.Content,
+                CategoryId = model.CategoryId,
                 CreatedUtc = DateTimeOffset.Now
             };
 
@@ -66,6 +67,7 @@ namespace ElevenNote.Services
                         Title = dbRow.Title,
                         Content = dbRow.Content,
                         CreatedUtc = dbRow.CreatedUtc,
+                        CategoryName = dbRow.Category.Name,
                         ModifiedUtc = dbRow.ModifiedUtc
                     };
                 }

@@ -24,7 +24,7 @@ namespace ElevenNote.Services
                 var categoryToCreate = new Category
                 {
                     Name = model.Name,
-                    Severity = model.Severity,
+                    //Severity = model.Severity,
                 };
                 ctx.Categories.Add(categoryToCreate);
                 return ctx.SaveChanges() == 1;
@@ -44,8 +44,55 @@ namespace ElevenNote.Services
                              Severity = x.Severity
                          }
                      );
-                return query.ToArray();
+                return query.ToList();
             }
+        }
+
+        public bool EditCategory(CategoryEdit model)
+        {
+            if (model != null)
+            {
+                using (var ctx = new ApplicationDbContext())
+                {
+                    var catToEdit = ctx.Categories.Single(c => c.CategoryId == model.CategoryId);
+
+                    catToEdit.Name = model.Name;
+                    catToEdit.Severity = model.Severity;
+
+                    return ctx.SaveChanges() == 1;
+                }
+            }
+            return false;
+        }
+
+        public CategoryListItem GetCategoryById(int id)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var catToReturn = ctx.Categories.Find(id);
+                if (catToReturn != null)
+                    return new CategoryListItem
+                    {
+                        CategoryId = catToReturn.CategoryId,
+                        Name = catToReturn.Name,
+                        Severity = catToReturn.Severity
+                    };
+                return null;
+            }
+        }
+
+        public bool DeleteCategory(int id)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var CatToDel = ctx.Categories.Find(id);
+                if(CatToDel != null)
+                {
+                    ctx.Categories.Remove(CatToDel);
+                }
+                return ctx.SaveChanges() == 1;
+            }
+
         }
     }
 }
