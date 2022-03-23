@@ -19,15 +19,17 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" }) 
-                </div>
+             </div>
 
-                <div>
-                @Html.LabelFor(model => model.Severity, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                            @Html.DropDownListFor(model => model.Severity, ViewData["Severities"] as IEnumerable<SelectListItem>, null, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.Severity, "", new { @class = "text-danger" })
-                    </div>
-                    </div>
+            <div>
+            @Html.LabelFor(model => model.Severity, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("Severity", EnumHelper.GetSelectList(typeof(ElevenNote.Data.Severity)), null, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Severity, "", new { @class = "text-danger" })
+                    @*@Html.DropDownListFor(model => model.Severity, ViewData["Severities"] as IEnumerable<SelectListItem>, null, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Severity, "", new { @class = "text-danger" })*@
+                </div>
+            </div>
         </div>
 
         <div class="form-group">

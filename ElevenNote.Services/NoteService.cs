@@ -46,6 +46,7 @@ namespace ElevenNote.Services
                         {
                             NoteId = x.NoteId,
                             Title = x.Title,
+                            Category = x.Category,
                             CreatedUtc = x.CreatedUtc
                         }
                     );
@@ -67,15 +68,13 @@ namespace ElevenNote.Services
                         Title = dbRow.Title,
                         Content = dbRow.Content,
                         CreatedUtc = dbRow.CreatedUtc,
-                        CategoryName = dbRow.Category.Name,
+                        Category = dbRow.Category,
                         ModifiedUtc = dbRow.ModifiedUtc
                     };
                 }
-                
                 else
                     //add logging
                     return null;
-               
             }
         }
 
@@ -88,6 +87,7 @@ namespace ElevenNote.Services
 
                 dbRow.Title = model.Title;
                 dbRow.Content = model.Content;
+                dbRow.CategoryId = model.CategoryId;
                 dbRow.ModifiedUtc = DateTimeOffset.Now;
 
                 return ctx.SaveChanges() == 1;

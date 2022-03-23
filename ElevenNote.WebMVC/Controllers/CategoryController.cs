@@ -33,17 +33,8 @@ namespace ElevenNote.WebMVC.Controllers
         public ActionResult Create()
         {
             var svc = CreateCategoryService();
-            var allCats = svc.GetAllCategories();
+            //var allCats = svc.GetAllCategories();
 
-            var sevs = Enum.GetValues(typeof(Severity))
-                 .Cast<Severity>()
-                 .Select(v => v.ToString()).ToList();
-
-            ViewData["Severities"] = sevs.Select(s => new SelectListItem
-            {
-                Text = s.ToString(),
-                Value = s
-            });
 
             return View();
         }
@@ -68,8 +59,97 @@ namespace ElevenNote.WebMVC.Controllers
         [HttpGet]
         public ActionResult Edit(int id)
         {
+            var svc = CreateCategoryService();
+            var CatToEdit = svc.GetCategoryById(id);
 
-            return View();
+            var model = new CategoryEdit
+            {
+                CategoryId = CatToEdit.CategoryId,
+                Name = CatToEdit.Name,
+                Severity = CatToEdit.Severity
+            };
+            return View(model);
+        }
+
+        //POST /Category/Edit/{id}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(int id, CategoryEdit model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            if (model.CategoryId != id)
+            {
+                ModelState.AddModelError("", "Id Mismatch");
+                return View(model);
+            }
+
+            var svc = CreateCategoryService();
+            
+
+            if (svc.EditCategory(model))
+            {
+                TempData["SaveResultDelete"] = $"Category Id {id} was updated";
+                return Redirect("/Category");
+            }
+
+            ModelState.AddModelError("", $"Category Id {id} could not be updated");
+
+            return View(model);
+        }
+
+        //GET /Category/Delete/{id}
+        [HttpGet]
+        public ActionResult Delete(int id)
+        {
+            var svc = CreateCategoryService();
+            var CatToDel = svc.GetCategoryById(id);
+
+            return View(new CategoryDelete
+            {
+                CategoryId = CatToDel.CategoryId,
+                Name = CatToDel.Name
+            });
+        }
+
+        //POST /Category/Delete/{id}
+        [HttpPost]
+        [ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeletePost(int id)
+        {
+
+            var svc = CreateCategoryService();
+
+            svc.DeleteCategory(id);
+
+            TempData["SaveResultDelete"] = $"Note Id {id} was deleted.";
+
+            return Redirect("/Category");
+
+
+
+            //if(!ModelState.IsValid)
+            //{
+            //    return View(model);
+            //}
+
+            //if(model.CategoryId != id)
+            //{
+            //    ModelState.AddModelError("", "Id Mismatch");
+            //    return View(model);
+            //}
+
+            //var svc = CreateCategoryService();
+
+            //if (svc.DeleteCategory(id))
+            //{
+            //    TempData["SaveResult"] = $"Category Id {id} was deleted.";
+            //    return RedirectToAction("Index");
+            //}
+            //ModelState.AddModelError("", $"Category Id {id} could not be updated");
+            //return View(model);
         }
     }
 }

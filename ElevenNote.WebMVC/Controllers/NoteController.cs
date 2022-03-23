@@ -11,6 +11,8 @@ namespace ElevenNote.WebMVC.Controllers
 {
     public class NoteController : Controller
     {
+        [Authorize]
+
         private NoteService CreateNoteService()
         {
             var userId = Guid.Parse(User.Identity.GetUserId());
@@ -25,7 +27,6 @@ namespace ElevenNote.WebMVC.Controllers
             return svc;
         }
 
-        [Authorize]
         // GET: /Note/Index
         public ActionResult Index()
         {
@@ -64,7 +65,7 @@ namespace ElevenNote.WebMVC.Controllers
 
             if (svc.CreateNote(model))
             {
-                TempData["SaveResult"] = "Note was created.";
+                TempData["SaveResultNote"] = "Note was created.";
                 return RedirectToAction("Index");
             }
 
@@ -87,13 +88,22 @@ namespace ElevenNote.WebMVC.Controllers
         [HttpGet]
         public ActionResult Edit(int id)
         {
+            var catSvc = CreateCategoryService();
+            var allCats = catSvc.GetAllCategories();
+            ViewData["Categories"] = allCats.Select(c => new SelectListItem
+            {
+                Text = c.Name,
+                Value = c.CategoryId.ToString()
+            });
+
             var svc = CreateNoteService();
             var deets = svc.GetNoteById(id);
             var model = new NoteEdit
             {
                 NoteId = deets.NoteId,
                 Title = deets.Title,
-                Content = deets.Content
+                Content = deets.Content,
+                Category = deets.Category
             };
             return View(model);
         }
@@ -116,7 +126,7 @@ namespace ElevenNote.WebMVC.Controllers
 
             if(svc.UpdateNote(model))
             {
-                TempData["SaveResult"] = $"Note Id {id} was updated";
+                TempData["SaveResultNote"] = $"Note Id {id} was updated";
                 return RedirectToAction("Index");
             }
 
@@ -145,7 +155,7 @@ namespace ElevenNote.WebMVC.Controllers
 
             svc.DeleteNote(id);
 
-            TempData["SaveResult"] = $"Note Id {id} was deleted.";
+            TempData["SaveResultNote"] = $"Note Id {id} was deleted.";
 
             return RedirectToAction("Index");
         }

@@ -20,6 +20,6 @@ namespace ElevenNote.Models.NoteModels
 
         public int CategoryId { get; set; }
         [Display(Name = "Category")]
-        public string CategoryName { get; set; }
+        public virtual Category Category { get; set; }
     }
 }

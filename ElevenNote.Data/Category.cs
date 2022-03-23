@@ -12,7 +12,7 @@ namespace ElevenNote.Data
     {
         [Key]
         public int CategoryId { get; set; }
-        [Required, MinLength(2, ErrorMessage = "Category namemust be at least 2 characters."), MaxLength(35, ErrorMessage = "Category name cannot be more than 35 characters.")]
+        [Required, MinLength(2, ErrorMessage = "Category namemust be at least 2 characters."), MaxLength(35, ErrorMessage = "Category name cannot be more than 35 characters."), Display(Name = "Category")]
         public string Name { get; set; }
 
         public Severity Severity { get; set; } = Severity.Medium;

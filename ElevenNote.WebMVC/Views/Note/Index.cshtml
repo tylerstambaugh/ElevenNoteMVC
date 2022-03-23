@@ -10,10 +10,10 @@
     @Html.ActionLink("Create New", "Create")
 </p>
 
-@if (TempData.ContainsKey("SaveResult"))
+@if (TempData.ContainsKey("SaveResultNote"))
 {
 <div class="alert alert-success fade in" role="alert">
-    @TempData["SaveResult"]
+    @TempData["SaveResultNote"]
     <button type="button" class="close" data-dismiss="alert">
         <span>&times;</span>
     </button>
@@ -22,11 +22,17 @@
 
 <table class="table">
     <tr>
-        <th>
+        @*<th>
             @Html.DisplayNameFor(model => model.NoteId)
-        </th>
+        </th>*@
         <th>
             @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Category.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Category.Severity)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.CreatedUtc)
@@ -36,21 +42,27 @@
 
 @foreach (var item in Model) {
     <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.NoteId)
-        </td>
+        @*<td>
+                @Html.DisplayFor(modelItem => item.NoteId)
+            </td>*@
         <td>
             @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Category.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Category.Severity)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.CreatedUtc)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new {  id=item.NoteId }) |
+            @Html.ActionLink("Edit", "Edit", new { id = item.NoteId }) |
             @Html.ActionLink("Details", "Details", new { id = item.NoteId }) |
             @Html.ActionLink("Delete", "Delete", new { id = item.NoteId })
         </td>
     </tr>
-}
+    }
 
 </table>

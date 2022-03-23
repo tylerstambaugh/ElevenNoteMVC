@@ -24,7 +24,7 @@ namespace ElevenNote.Services
                 var categoryToCreate = new Category
                 {
                     Name = model.Name,
-                    //Severity = model.Severity,
+                    Severity = model.Severity,
                 };
                 ctx.Categories.Add(categoryToCreate);
                 return ctx.SaveChanges() == 1;
@@ -77,6 +77,8 @@ namespace ElevenNote.Services
                         Name = catToReturn.Name,
                         Severity = catToReturn.Severity
                     };
+
+                //add logging
                 return null;
             }
         }
